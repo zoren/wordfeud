@@ -29,6 +29,11 @@
 
 (def not-in-ro #{"ionpar"})
 
+(comment
+  words in wordfeudsnyd but not in wordfeud!
+  #{"fribad"}
+  )
+
 (def conjugations #{"skreds"})
 
 (def word-kinds (reduce (fn [acc l]

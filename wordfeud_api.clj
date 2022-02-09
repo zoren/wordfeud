@@ -65,15 +65,27 @@
     (clojure.set/difference tile-neighbours tiles)))
 
 (defn print-state [map]
+  (println "-----------------")
   (doseq [y (range 0 15)]
-    (println (apply str (for [x (range 0 15)] (map {:x x :y y} \ ))))))
+    (println (str "|" (apply str (for [x (range 0 15)] (map {:x x :y y} \ ))) "|")))
+  (println "-----------------"))
+
+(defn check [tiles laid-tiles]
+  (if-let [already-laid (filter tiles (keys laid-tiles))]
+    (throw (ex-info "Tiles are already covered" {:already-laid already-laid})))
+  (if-not (or (reduce = (map (comp :x first) laid-tiles))
+              (reduce = (map (comp :y first) laid-tiles)))
+    (throw (ex-info "Tiles not on line nor colum" {:already-laid laid-tiles})))
+  ;;  (if-let [not-on-line (reduce (fn [ [k _]] ()) (map laid-tiles)]))
+  )
 
 (comment
-  (def email "")
-  (def password (enc-pass ""))
+  (def email "zorren@gmail.com")
+  (def password (enc-pass "brunata"))
   (def credentials
     {:email email
      :password password})
   (log-in credentials)
   (get-games)
+  (print-state (merge (into {} (map (fn [p] [p \*]) (get-game-tile-neighbours game))) (game :tiles)))
   )
